@@ -20,8 +20,16 @@ html {
 }
 
 #chat-box {
+<<<<<<< HEAD
     background-color: white;
     margin: 5% 15%;
+=======
+    background-color: aquamarine;
+    margin: 1% 10% 0 10%;
+    padding: 3%;
+    width: 75%;
+    height: 50%;
+>>>>>>> 8c5944a9ef180a98525e41eca339dab5d7a6d924
         
 }
 
@@ -49,7 +57,7 @@ body {
   background-size: cover;
   background-position: center center;
   position: relative;
-  border: 5px solid #000;
+  border: 0px solid #000;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 0 20px #000;
@@ -85,6 +93,7 @@ body {
 }
 .chat .messages .message .you:before, .chat .messages .message .bot:before {
   padding: 5px;
+  font-family: Helvetica Neue; 
   border-radius: 5px;
   position: absolute;
   top: -15px;
@@ -94,11 +103,13 @@ body {
 }
 .chat .messages .message .you {
   background: #1D62F0;
+  font-family: Helvetica Neue; 
+  color:white;
   text-decoration-color: aliceblue;
   float: right;
 }
 .chat .messages .message .you:before {
-
+  font-family: Helvetica Neue;
   background-color: #1D62F0;
   right: 10px;
 }
@@ -107,12 +118,13 @@ body {
   float: left;
 }
 .chat .messages .message .bot:before {
-  content: ":";
+  content: "Copundrum Bot:";
   background-color: #DBDDDE;
   left: 10px;
 }
 .chat .messages .message:after {
   content: "";
+  color:black;
   clear: both;
   display: table;
 }
@@ -126,6 +138,7 @@ body {
 }
 .chat .input .text {
   background-color: #fff;
+  color:black;
   border-radius: 20px;
   height: 40px;
   position: absolute;
