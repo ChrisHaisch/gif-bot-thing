@@ -38,7 +38,10 @@
     },
     
     game_menu: function() {
-     
+        var text = $(".text").val().trim();
+        this.bot_post(text);
+          $(".text").val("");
+        $(".messages").append("<div class='message'><div class='you'>" + text + "</div></div>");
         return this.bot_post("in the game menu");
     },
          
