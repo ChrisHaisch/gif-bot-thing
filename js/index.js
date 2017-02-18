@@ -16,23 +16,36 @@
         return e.preventDefault();
       });
     },
+         
+    check_input: function(msg) {
+        var pattern;
+        pattern = /hello/i;
+        if (pattern.test(msg)) {
+            this.bot_post("Hi! You seem fun!");
+        }
+        pattern = /game[s]?/i;
+        if (pattern.test(msg)) {
+            this.bot_post("You wanna play a game?");
+            this.bot_post("I know tic tac toe!");
+        }
+        pattern = /tic\s*tac\s*toe/i;
+        if (pattern.test(msg)) {
+            return this.bot_post("We're gonna play tic tac toe.");
+        }
+        
+    }, 
+    game_menu: function(msg) {
+        // this is the menu for if they mentioned games
+        return this.bot_post("in the game menu");
+    },
+      
     send_message: function() {
       var msg;
       msg = $(".text").val().trim();
       if (msg) {
         $(".text").val("");
         $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
-        return this.check(msg);
-      }
-    },
-    check: function(msg) {
-      var keyword;
-      if (msg.substring(0, 6) === "gif me") {
-        keyword = msg.substring(7);
-        keyword = keyword.replace(/[ ]/g, "+");
-        return this.get_gif(keyword);
-      } else {
-        return this.bot_post("Wrong syntax ''gif me keyword''.");
+        return this.check_input(msg);
       }
     },
     bot_post: function(msg) {
