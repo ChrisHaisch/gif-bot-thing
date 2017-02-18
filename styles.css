@@ -28,9 +28,9 @@ html {
         
 }
 
+
 #contact {
     margin: 10% 5% 0 5%;
-    padding; 0;
 }
    /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
       * {
@@ -60,7 +60,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  margin: auto;
+   margin: auto;
   box-sizing: border-box;
 }
 .chat .messages {
