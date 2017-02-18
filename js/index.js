@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var app;
 
   $(document).ready(function() {
@@ -18,27 +18,30 @@
     },
          
     check_input: function(msg) {
-        var pattern;
-        pattern = /hello/i;
-        if (pattern.test(msg)) {
+        var reg_pattern;
+        reg_pattern = /hello/i;
+        if (reg_pattern.test(msg)) {
             this.bot_post("Hi! You seem fun!");
         }
-        pattern = /game[s]?/i;
-        if (pattern.test(msg)) {
+        reg_pattern = /game[s]?/i;
+        if (reg_pattern.test(msg)) {
             this.bot_post("You wanna play a game?");
             this.bot_post("I know tic tac toe!");
+            this.game_menu();
         }
-        pattern = /tic\s*tac\s*toe/i;
-        if (pattern.test(msg)) {
+        
+        reg_pattern = /tic\s*tac\s*toe/i;
+        if (reg_pattern.test(msg)) {
             return this.bot_post("We're gonna play tic tac toe.");
         }
         
-    }, 
-    game_menu: function(msg) {
-        // this is the menu for if they mentioned games
+    },
+    
+    game_menu: function() {
+     
         return this.bot_post("in the game menu");
     },
-      
+         
     send_message: function() {
       var msg;
       msg = $(".text").val().trim();
@@ -46,6 +49,7 @@
         $(".text").val("");
         $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
         return this.check_input(msg);
+        
       }
     },
     bot_post: function(msg) {
