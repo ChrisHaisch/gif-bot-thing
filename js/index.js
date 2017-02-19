@@ -54,14 +54,17 @@ var flags = "00000";
                     this.bot_post("I know tic tac toe!");
                     flags = "10000";
                 }
+                reg_pattern = /food/i;
+                if (reg_pattern.test(msg)) {
+                    this.bot_post("What do you want to eat? (Mexican, Burgers, Salads, etc)");
+                    flags = "01000";
+                }
                 break;
                 
             case "10000":
-                //playing tic tac toe
-               
+                //playing tic tac to
                  this.tic_tac_toe(msg);
                 break;
-                
             case "01000":
                 this.food_handler(msg);
                 break;
@@ -83,12 +86,12 @@ var flags = "00000";
              flags = "00000";
         }
     },
-    food_handler: function() {
-         reg_patern = "exit";
-        if(reg_patern == msg){
-             this.bot_post("fuck you");
-             flags = "00000";
-        }
+    food_handler: function(msg) {
+         reg_patern = "burger";
+            if(reg_patern == msg) {
+              this.bot_post("         XXX         XXX         XXX         ");
+            }
+        
     },
 // gets message and clears the form
     send_message: function() {
