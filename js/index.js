@@ -58,12 +58,12 @@ var flags = "00000";
                 
             case "10000":
                 //playing tic tac toe
-                 this.bot_post("We're playing tic tac toe.");
-                 this.tic_tac_toe();
+               
+                 this.tic_tac_toe(msg);
                 break;
                 
             case "01000":
-                this.food_handler();
+                this.food_handler(msg);
                 break;
         }
 
@@ -76,11 +76,19 @@ var flags = "00000";
         
     }, 
       
-    tic_tac_toe: function() {
-       this.bot_post("We're playing tic tac toe.");
+    tic_tac_toe: function(msg) {
+        reg_patern = "exit";
+        if(reg_patern == msg){
+             this.bot_post("fuck you");
+             flags = "00000";
+        }
     },
     food_handler: function() {
-        this.bot_post("in food handler");
+         reg_patern = "exit";
+        if(reg_patern == msg){
+             this.bot_post("fuck you");
+             flags = "00000";
+        }
     },
 // gets message and clears the form
     send_message: function() {
