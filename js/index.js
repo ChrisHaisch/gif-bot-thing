@@ -59,12 +59,12 @@ var flags = "00000";
                 
             case "10000":
                 //playing tic tac toe
-                 this.bot_post("We're playing tic tac toe.");
-                 this.tic_tac_toe();
+               
+                 this.tic_tac_toe(msg);
                 break;
                 
             case "01000":
-                this.food_handler();
+                this.food_handler(msg);
                 break;
         }
 
@@ -75,25 +75,23 @@ var flags = "00000";
             return true;
         }
         
-    },
-// quit handler, returns boolean
-      // Todo Not working
-    quit_check: function(msg) {
-        var a = /exit/i;
-        var b = /quit/i;
-        if (a.test(msg) || b.test(msg)) {
-            return true;
-        }
-        return false;
-    },
-//tic tac toe handler
+
+    }, 
+      
     tic_tac_toe: function(msg) {
-        this.bot_post("We're playing tic tac toe.");
-    
+        reg_patern = "exit";
+        if(reg_patern == msg){
+             this.bot_post("fuck you");
+             flags = "00000";
+        }
     },
-// Yelp handler
-    food_handler: function(msg) {
-        this.bot_post("in food handler");
+    food_handler: function() {
+         reg_patern = "exit";
+        if(reg_patern == msg){
+             this.bot_post("fuck you");
+             flags = "00000";
+        }
+
     },
 // gets message and clears the form
     send_message: function() {

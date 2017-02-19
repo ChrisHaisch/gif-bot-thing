@@ -23,7 +23,7 @@ html {
     background-color: aquamarine;
     margin: 1% 10% 0 10%;
     padding: 3%;
-    width: 75%;
+    width: 76%;
     height: 50%;
         
 }
@@ -55,7 +55,7 @@ body {
   border: 0px solid #000;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 0 20px #000;
+  box-shadow: 0 0 10px #000;
   top: 0;
   left: 0;
   right: 0;
@@ -144,4 +144,4 @@ body {
   line-height: 40px;
   padding: 0 20px;
   box-sizing: border-box;
-}
+}   
