@@ -12,31 +12,46 @@
     },
     bind_events: function() {
       return $(document).on("submit", "#chat", function(e) {
-        app.send_message();
+        app.handle_input();
         return e.preventDefault();
       });
     },
-         
+    handle_input() {
+    
+        var msg;
+        msg = $(".text").val().trim();
+        if (msg) {
+       $(".text").val("");
+        $(".messages").append("<div class='message'><div class='you'>" + msg + "</div></div>");
+        this.check_input(msg);
+      
+        
+      }
+    },
+      
     check_input: function(msg) {
         var reg_pattern;
         reg_pattern = /hello/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("Hi! You seem fun!");
+            return false;
         }
         reg_pattern = /game[s]?/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("You wanna play a game?");
             this.bot_post("I know tic tac toe!");
             this.game_menu();
+            return true;
         }
         
         reg_pattern = /tic\s*tac\s*toe/i;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("We're gonna play tic tac toe.");
+             this.bot_post("We're gonna play tic tac toe.");
+            return true;
         }
         
     },
-    
+
     game_menu: function() {
         var text = $(".text").val().trim();
         this.bot_post(text);
