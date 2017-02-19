@@ -1,3 +1,11 @@
+// these flags let us have the same operation as inner loops and nesting that we couldn't figure out with geting user input again.  
+// Each flag is specific to a section run:
+// 10000 = Tic Tac Toe
+// 01000 = Yelp Loop
+// 00100 = 
+// 00010 =
+// 00001 =
+
 var flags = "00000";
 (function () {
   var app;
@@ -17,7 +25,7 @@ var flags = "00000";
         return e.preventDefault();
       });
     },
-    handle_input() {
+    handle_input: function() {
     
         var msg;
         msg = $(".text").val().trim();
@@ -50,7 +58,12 @@ var flags = "00000";
                 
             case "10000":
                 //playing tic tac toe
-                this.bot_post("We're playing tic tac toe.");
+                 this.bot_post("We're playing tic tac toe.");
+                 this.tic_tac_toe();
+                break;
+                
+            case "01000":
+                this.food_handler();
                 break;
         }
 
@@ -61,16 +74,15 @@ var flags = "00000";
             return true;
         }
         
+    }, 
+      
+    tic_tac_toe: function() {
+       this.bot_post("We're playing tic tac toe.");
     },
-
-    game_menu: function() {
-        var text = $(".text").val().trim();
-        this.bot_post(text);
-          $(".text").val("");
-        $(".messages").append("<div class='message'><div class='you'>" + text + "</div></div>");
-        return this.bot_post("in the game menu");
+    food_handler: function() {
+        this.bot_post("in food handler");
     },
-         
+// gets message and clears the form
     send_message: function() {
       var msg;
       msg = $(".text").val().trim();
@@ -81,6 +93,7 @@ var flags = "00000";
         
       }
     },
+// posts from the bot
     bot_post: function(msg) {
       return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
     },
