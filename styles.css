@@ -26,7 +26,8 @@ html {
     margin: 1% 10% 0 10%;
     padding: 3%;
     width: 76%;
-    height: 50%;    
+    height: 50%; 
+    border-radius: 25px;
         
 }
 

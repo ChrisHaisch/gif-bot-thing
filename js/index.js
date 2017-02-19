@@ -5,10 +5,12 @@
 // 00100 = 
 // 00010 =
 // 00001 =
-
+// GLOBAL VARS ARE OFTEN BAD PRACTICE I DONT CARE AT 5AM 
 var flags = "00000";
 // board init at game start, 0 is empty, 1 is X, 2 is O
 var board;
+var pos_left;
+var ai_pos;
 
 (function () {
   var app;
@@ -45,31 +47,31 @@ var board;
         
         switch (flags) {
             case "00000":
-                //generic/ checking response
+                //generic checking response, not in a loop
                 this.generic_handler(msg);
                 break;
                 
             case "10000":
-                //playing tic tac toe
+                // playing tic tac toe
                  this.tic_tac_toe(msg);
                 break;
                 
             case "01000":
+                // dealing with food loop
                 this.food_handler(msg);
                 break;
         }
 
       
         
-        reg_pattern = /tic\s*tac\s*toe/i;
+        var reg_pattern = /tic\s*tac\s*toe/i;
         if (reg_pattern.test(msg)) {
             return true;
         }
         
 
     }, 
-      
-    tic_tac_toe: function(msg) {
+    tic_tac_toe: function (msg) {
         if (!this.quit_check(msg)) {
             var space =  "⬜️";
             var o_shape = "⭕️";
@@ -81,15 +83,93 @@ var board;
             } else {
                 msg = msg.trim();
                 board[msg] = x_shape;
+             var index = pos_left.indexOf(msg);
+                if (index > -1) {
+                    pos_left.splice(index, 1);
+                }
+               this.bot_post(msg + index);
                 this.print_board();
                 this.check_win();
                 this.ai_move();
+                this.print_board();
+                this.check_win();
             }
         }
        
     },
-    check_win: function(msg) {
-        
+// really gross check win function, didn't want to waste time here so ctrl+v was friend
+// handles both player and AI win, prints message and quits to menu
+      check_win: function() {
+            var space =  "⬜️";
+            var o_shape = "⭕️";
+            var x_shape = "❌";
+        // first three check horizontal
+        if (board[0] == x_shape && board[1] == x_shape && board[2] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[3] == x_shape && board[4] == x_shape && board[5] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[6] == x_shape && board[7] == x_shape && board[8] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+          if (board[0] == o_shape && board[1] == o_shape && board[2] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        if (board[3] == o_shape && board[4] == o_shape && board[5] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        if (board[6] ==o_shape && board[7] == o_shape && board[8] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        // these three check vertical
+         if (board[0] == x_shape && board[3] == x_shape && board[6] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[1] == x_shape && board[4] == x_shape && board[7] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[2] == x_shape && board[5] == x_shape && board[8] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[0] == o_shape && board[3] == o_shape && board[6] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        if (board[1] == o_shape && board[4] == o_shape && board[7] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        if (board[2] == o_shape && board[5] == o_shape && board[8] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        // last two check horizontal
+        if (board[0] == x_shape && board[4] == x_shape && board[8] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[2] == x_shape && board[4] == x_shape && board[6] == x_shape) {
+            this.bot_post("You won, holy cow you're good!");
+            flags = "00000";
+        }
+        if (board[0] == o_shape && board[4] == o_shape && board[8] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
+        if (board[2] == o_shape && board[4] == o_shape && board[6] == o_shape) {
+            this.bot_post("");
+            flags = "00000";
+        }
     },
     food_handler: function() {
          var reg_patern = "exit";
@@ -128,11 +208,11 @@ var board;
         var reg_pattern;
         // Angry/ Cussing / Harassing Handler
 //TODO: finish regex anger string
-        reg_pattern = /fuck|^shit|^ass|^bitch|whore|^slut/i;
+        reg_pattern = /\bfuck|^shit|^ass|^bitch|whore|^slut\b/i;
         if (reg_pattern.test(msg)) {
             return this.bot_post("");
         }
-        reg_pattern = /(hello|^hi[^a-z]*|hey)/i;
+        reg_pattern = /\b(hello|^hi|hey)\b/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("Hi! I'm fun, I know games and puns:)" );
         }
@@ -141,22 +221,25 @@ var board;
         if (reg_pattern.test(msg)) {
             return this.bot_post("");
         }
-        reg_pattern = /\b(your name)|\bold|age/;
+        reg_pattern = /\b(your name)|\bold|age\b/;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("Awww, well, at lea");
+            // TODO return all basic bot info for any question of age/name/etc
+            return this.bot_post("");
         }
     //TODO: tell me a story/ riddle/ pun etc
         reg_pattern = /tell me a/i;
         if (reg_pattern.test(msg)) {
             // if pun, story, joke
         }
-        reg_pattern = /game[s]?/i;
+        reg_pattern = /\bplay|game[s]?\b/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("How about tic tac toe!");
             flags = "10000";
             board = ["⬜️", "⬜️", "⬜️",
                      "⬜️", "⬜️", "⬜️", 
                      "⬜️", "⬜️", "⬜️"];
+            pos_left = [0,1,2,3,4,5,6,7,8];
+            ai_pos = [];
             this.print_board();
            return this.bot_post("Your move! Pick a slot using the board number. 0,1,2-3,4,5-6,7,8 starting from top left");
         }
@@ -195,6 +278,8 @@ var board;
     },
     ai_move: function() {
         this.bot_post("My turn!");
+        // pick random move from pos_left    
+        
     },
 // posts from the bot
     bot_post: function(msg) {
