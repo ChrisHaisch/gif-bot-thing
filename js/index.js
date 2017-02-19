@@ -7,6 +7,7 @@
 // 00001 =
 
 var flags = "00000";
+
 (function () {
   var app;
 
@@ -74,12 +75,24 @@ var flags = "00000";
             return true;
         }
         
-    }, 
-      
-    tic_tac_toe: function() {
-       this.bot_post("We're playing tic tac toe.");
     },
-    food_handler: function() {
+// quit handler, returns boolean
+      // Todo Not working
+    quit_check: function(msg) {
+        var a = /exit/i;
+        var b = /quit/i;
+        if (a.test(msg) || b.test(msg)) {
+            return true;
+        }
+        return false;
+    },
+//tic tac toe handler
+    tic_tac_toe: function(msg) {
+        this.bot_post("We're playing tic tac toe.");
+    
+    },
+// Yelp handler
+    food_handler: function(msg) {
         this.bot_post("in food handler");
     },
 // gets message and clears the form
@@ -97,6 +110,7 @@ var flags = "00000";
     bot_post: function(msg) {
       return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
     },
+// TODO gets smae few gifs no matter search terms
     get_gif: function(keyword) {
       return $.get("http://api.giphy.com/v1/gifs/search?q=" + keyword + "&api_key=" + this.api_key, function(data) {
         var index;
