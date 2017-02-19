@@ -7,9 +7,6 @@ html {
     padding: 0;
     margin: 0;
 }
-#title {
-    
-}
 
 #title h1 {
     font-size: 13vw;
@@ -23,7 +20,7 @@ html {
 
 #chat-box {
     background-color: aquamarine;
-    margin: 1% 10% 0 10%;
+    margin: 4% 10% 0 10%;
     padding: 3%;
     width: 76%;
     height: 50%; 
@@ -31,14 +28,16 @@ html {
         
 }
 
-
+.footer {
+    padding-top: 5%;
+}
 #contact {
     margin: 10% 5% 0 5%;
 }
    /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
       * {
   margin: 0;
-  padding: 0;
+  padding-top: 20px;
   border: 0;
   outline: 0;
 }
@@ -116,7 +115,7 @@ body {
   float: left;
 }
 .chat .messages .message .bot:before {
-  content: "Copundrum Bot:";
+  content: "Chad:";
   background-color: #DBDDDE;
   left: 10px;
 }
@@ -148,3 +147,6 @@ body {
   padding: 0 20px;
   box-sizing: border-box;
 }   
+#Links {
+    padding-top: 20px;
+}

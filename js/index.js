@@ -12,12 +12,12 @@ var board;
 var pos_left;
 // Unused, would have been for smarter AI
 var ai_pos;
-var pun_list = ["I wasn't originally going to get a brain transplant, but then I changed my mind.", "How did I escape Iraq? Iran.", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "I'd tell you a chemistry joke but I know I wouldn't get a reaction.","I'm reading a book about anti-gravity. It's impossible to put down.", "I'm glad I know sign language, it's pretty handy"];
+
 
 (function () {
   var app;
     // Puns from onelinefun.com
-    pun_list = 
+    var pun_list = ["I wasn't originally going to get a brain transplant, but then I changed my mind.", "How did I escape Iraq? Iran.", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "I'd tell you a chemistry joke but I know I wouldn't get a reaction.","I'm reading a book about anti-gravity. It's impossible to put down.", "I'm glad I know sign language, it's pretty handy"];
 
   $(document).ready(function() {
     return app.init();
@@ -76,16 +76,19 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
                 this.bot_post("Not a value I can use. Try again.");
             } else {
                 msg = msg.trim();
-                board[msg] = x_shape;
-             var index = pos_left.indexOf(msg);
-                if (index > -1) {
-                    pos_left.splice(index, 1);
+                if (board[msg] == space) {
+                    board[msg] = x_shape;
+                    var index = pos_left.indexOf(msg);
+                    if (index > -1) {
+                        pos_left.splice(index, 1);
+                    }
+                    this.check_win();
+                    this.ai_move();
+                    this.check_win();
+                    this.print_board();
+                } else {
+                    this.bot_post("Can't place there!");
                 }
-                this.print_board();
-                this.check_win();
-                this.ai_move();
-                this.print_board();
-                this.check_win();
             }
         }
        
@@ -200,35 +203,45 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
         //TODO: Do siri easter egg text cuz iphone, also puns, gifs, and dad jokes
         var reg_pattern;
         // Angry/ Cussing / Harassing Handler
-//TODO: finish regex anger string
         reg_pattern = /\bfuck|^shit|^ass|^bitch|whore|^slut|cock|douche|turd|cum|^dam$|^damn$|dick|^dum|^fag|^gay|tard\b/i;
         if (reg_pattern.test(msg)) {
             return this.bot_post("Hey, you're using bad words, and those are a bad habit. Go to hackharassment.com to learn more about why you should reconsider your choices.");
         }
         reg_pattern = /\b(hello|^hi|hey)\b/i;
         if (reg_pattern.test(msg)) {
-            this.bot_post("Hi! I'm fun, I know games and puns:)" );
+            this.bot_post("Hi! You seem pretty cool!" );
         }
         // Let the hello fall through to possible other options
-        // TODO: implement this one
-        reg_pattern = /how are you/i;
+        reg_pattern = /(how\sare\syou)|(you\sfeel)/i;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("");
+            return this.bot_post("I took a nap til you got here, so refreshed:D");
         }
         reg_pattern = /\b(name)|\bold|^age$\b/;
         if (reg_pattern.test(msg)) {
-            // TODO return all basic bot info for any question of age/name/etc
             return this.bot_post("I'm Chad, and age is just a number.");
         }
            // in case its just are you and not how are you
         reg_pattern = /(are\syou)/i;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("Am I? These are questions you have to answer yourself.");
+            var prblty = Math.floor(Math.random() * 5);
+            if (prblty > 2 && prblty <5) {
+                return this.bot_post("Idk...:(");
+            } else {
+                 return this.bot_post("Am I? These are questions you have to answer yourself.");
+            }
+           
         }
-    //TODO: tell me a story/ riddle/ pun etc
-        reg_pattern = /tell me a/i;
+        reg_pattern = /tell\sme\sa/i;
         if (reg_pattern.test(msg)) {
-            // if pun, story, joke
+            // if story, joke
+            var patt = /joke/i;
+            if (patt.test(msg)) {
+                return this.bot_post("Why does everything have to be about you?");
+            }
+            patt = /story/i;
+            if (patt.test(msg)) {
+                return this.bot_post("I ain't no book.");
+            }
         }
      
         reg_pattern = /(\bplay|game[s]?\b)|(tic\s*tac\s*toe)/i;
@@ -241,9 +254,13 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
             pos_left = [0,1,2,3,4,5,6,7,8];
             ai_pos = [];
             this.print_board();
-           return this.bot_post("Your move! Pick a slot using the board number. 0,1,2-3,4,5-6,7,8 starting from top left");
+           return this.bot_post("Your move! Pick a slot using the board number. 0,1,2-3,4,5-6,7,8 starting from top left.");
         }
-        
+        reg_pattern = /pun[a-z]*/i;
+        if(reg_pattern.test(msg)) {
+            this.bot_post("Did I hear something about puns?");
+            return this.say_pun();
+        }
         reg_pattern = /(love|like)\s*me/i;
         if(reg_pattern.test(msg)) {
            return this.bot_post("Look...a puppy!");
@@ -254,7 +271,7 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
             return this.bot_post("Well, I'm a bot....soooooooo...");
         }
         
-        reg_pattern = /^(How do you feel)/i;
+        reg_pattern = /^(you\sthink)/i;
         if (reg_pattern.test(msg)) {
              return this.bot_post("I think, therefore I am.  But let's not put Descartes before the horse.");
         }
@@ -268,9 +285,13 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
             if (reg_pattern.test(msg)) {
             return this.bot_post("Judging by your typing, you must be fairly attractive");
         }
-        // TODO: pun option
-        this.say_pun();
-       // this.get_gif(msg);
+        // if it doesn't have a response, randomly choose pun or gif with weighted probability
+        var val = Math.floor(Math.random() * 10);
+        if ( val > 3) {
+            this.get_gif(msg);
+        } else {
+            this.say_pun();
+        }
     },
     print_board: function() {
         
@@ -295,16 +316,13 @@ var pun_list = ["I wasn't originally going to get a brain transplant, but then I
     say_pun: function() {
         var size = pun_list.length;
         var index = Math.floor(Math.random() * size);
-        var string = pun_list[index];
-        var x = document.getElementById(pun_list[0]);
-        return this.bot_post(x);
+        return this.bot_post(pun_list[index]);
 
     },
 // posts from the bot
     bot_post: function(msg) {
       return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
     },
-// TODO gets smae few gifs no matter search terms
     get_gif: function(keyword) {
       return $.get("http://api.giphy.com/v1/gifs/search?q=" + keyword + "&api_key=" + this.api_key, function(data) {
         var index;
