@@ -61,15 +61,6 @@ var ai_pos;
                 this.food_handler(msg);
                 break;
         }
-
-      
-        
-        var reg_pattern = /tic\s*tac\s*toe/i;
-        if (reg_pattern.test(msg)) {
-            return true;
-        }
-        
-
     }, 
     tic_tac_toe: function (msg) {
         if (!this.quit_check(msg)) {
@@ -87,7 +78,6 @@ var ai_pos;
                 if (index > -1) {
                     pos_left.splice(index, 1);
                 }
-               this.bot_post(msg + index);
                 this.print_board();
                 this.check_win();
                 this.ai_move();
@@ -117,15 +107,15 @@ var ai_pos;
             flags = "00000";
         }
           if (board[0] == o_shape && board[1] == o_shape && board[2] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         if (board[3] == o_shape && board[4] == o_shape && board[5] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         if (board[6] ==o_shape && board[7] == o_shape && board[8] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         // these three check vertical
@@ -142,15 +132,15 @@ var ai_pos;
             flags = "00000";
         }
         if (board[0] == o_shape && board[3] == o_shape && board[6] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         if (board[1] == o_shape && board[4] == o_shape && board[7] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         if (board[2] == o_shape && board[5] == o_shape && board[8] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         // last two check horizontal
@@ -163,11 +153,11 @@ var ai_pos;
             flags = "00000";
         }
         if (board[0] == o_shape && board[4] == o_shape && board[8] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
         if (board[2] == o_shape && board[4] == o_shape && board[6] == o_shape) {
-            this.bot_post("");
+            this.bot_post("Sorry I beat you, bettter luck next time!");
             flags = "00000";
         }
     },
@@ -231,7 +221,8 @@ var ai_pos;
         if (reg_pattern.test(msg)) {
             // if pun, story, joke
         }
-        reg_pattern = /\bplay|game[s]?\b/i;
+     
+        reg_pattern = /(\bplay|game[s]?\b)|(tic\s*tac\s*toe)/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("How about tic tac toe!");
             flags = "10000";
@@ -278,7 +269,14 @@ var ai_pos;
     },
     ai_move: function() {
         this.bot_post("My turn!");
-        // pick random move from pos_left    
+        // pick random move from pos_left
+        var size = pos_left.length;
+        var index = Math.floor(Math.random() * size);
+        board[index] = "⭕️";
+        var remove = pos_left.indexOf(index);
+        if (remove > -1) {
+            pos_left.splice(remove, 1);
+        }
         
     },
 // posts from the bot
