@@ -1,3 +1,4 @@
+var flags = "00000";
 (function () {
   var app;
 
@@ -30,23 +31,33 @@
     },
       
     check_input: function(msg) {
-        var reg_pattern;
-        reg_pattern = /hello/i;
-        if (reg_pattern.test(msg)) {
-            this.bot_post("Hi! You seem fun!");
-            return false;
+        
+        switch (flags) {
+            case "00000":
+                //generic/ checking response
+                var reg_pattern;
+                reg_pattern = /hello/i;
+                if (reg_pattern.test(msg)) {
+                    this.bot_post("Hi! You seem fun!");
+                }
+                reg_pattern = /game[s]?/i;
+                if (reg_pattern.test(msg)) {
+                    this.bot_post("You wanna play a game?");
+                    this.bot_post("I know tic tac toe!");
+                    flags = "10000";
+                }
+                break;
+                
+            case "10000":
+                //playing tic tac toe
+                this.bot_post("We're playing tic tac toe.");
+                break;
         }
-        reg_pattern = /game[s]?/i;
-        if (reg_pattern.test(msg)) {
-            this.bot_post("You wanna play a game?");
-            this.bot_post("I know tic tac toe!");
-            this.game_menu();
-            return true;
-        }
+
+      
         
         reg_pattern = /tic\s*tac\s*toe/i;
         if (reg_pattern.test(msg)) {
-             this.bot_post("We're gonna play tic tac toe.");
             return true;
         }
         
