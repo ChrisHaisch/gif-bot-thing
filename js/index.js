@@ -10,10 +10,14 @@ var flags = "00000";
 // board init at game start, 0 is empty, 1 is X, 2 is O
 var board;
 var pos_left;
+// Unused, would have been for smarter AI
 var ai_pos;
+var pun_list = ["I wasn't originally going to get a brain transplant, but then I changed my mind.", "How did I escape Iraq? Iran.", "I can't believe I got fired from the calendar factory. All I did was take a day off.", "I'd tell you a chemistry joke but I know I wouldn't get a reaction.","I'm reading a book about anti-gravity. It's impossible to put down.", "I'm glad I know sign language, it's pretty handy"];
 
 (function () {
   var app;
+    // Puns from onelinefun.com
+    pun_list = 
 
   $(document).ready(function() {
     return app.init();
@@ -198,23 +202,29 @@ var ai_pos;
         var reg_pattern;
         // Angry/ Cussing / Harassing Handler
 //TODO: finish regex anger string
-        reg_pattern = /\bfuck|^shit|^ass|^bitch|whore|^slut\b/i;
+        reg_pattern = /\bfuck|^shit|^ass|^bitch|whore|^slut|cock|douche|turd|cum|^dam$|^damn$|dick|^dum|^fag|^gay|tard\b/i;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("");
+            return this.bot_post("Hey, you're using bad words, and those are a bad habit. Go to hackharassment.com to learn more about why you should reconsider your choices.");
         }
         reg_pattern = /\b(hello|^hi|hey)\b/i;
         if (reg_pattern.test(msg)) {
             this.bot_post("Hi! I'm fun, I know games and puns:)" );
         }
         // Let the hello fall through to possible other options
+        // TODO: implement this one
         reg_pattern = /how are you/i;
         if (reg_pattern.test(msg)) {
             return this.bot_post("");
         }
-        reg_pattern = /\b(your name)|\bold|age\b/;
+        reg_pattern = /\b(name)|\bold|^age$\b/;
         if (reg_pattern.test(msg)) {
             // TODO return all basic bot info for any question of age/name/etc
-            return this.bot_post("");
+            return this.bot_post("I'm Chad, and age is just a number.");
+        }
+           // in case its just are you and not how are you
+        reg_pattern = /(are\syou)/i;
+        if (reg_pattern.test(msg)) {
+            return this.bot_post("Am I? These are questions you have to answer yourself.");
         }
     //TODO: tell me a story/ riddle/ pun etc
         reg_pattern = /tell me a/i;
@@ -242,7 +252,7 @@ var ai_pos;
         
         reg_pattern = /(love|like)\s*you/i;
         if (reg_pattern.test(msg)) {
-            return this.bot_post("");
+            return this.bot_post("Well, I'm a bot....soooooooo...");
         }
         
         reg_pattern = /^(How do you feel)/i;
@@ -259,6 +269,9 @@ var ai_pos;
             if (reg_pattern.test(msg)) {
             return this.bot_post("Judging by your typing, you must be fairly attractive");
         }
+        // TODO: pun option
+        this.say_pun();
+       // this.get_gif(msg);
     },
     print_board: function() {
         
@@ -267,6 +280,7 @@ var ai_pos;
         this.bot_post(board[6] + board[7] + board[8]);
         
     },
+    // ai picks random value from remaining squares
     ai_move: function() {
         this.bot_post("My turn!");
         // pick random move from pos_left
@@ -279,6 +293,14 @@ var ai_pos;
         }
         
     },
+    say_pun: function() {
+        var size = pun_list.length;
+        var index = Math.floor(Math.random() * size);
+        var string = pun_list[index];
+        var x = document.getElementById(pun_list[0]);
+        return this.bot_post(x);
+
+    },
 // posts from the bot
     bot_post: function(msg) {
       return $(".messages").append("<div class='message'><div class='bot'>" + msg + "</div></div>");
@@ -290,8 +312,7 @@ var ai_pos;
         if (data.data.length === 0) {
           return app.bot_post("Sorry I can't find any gif for that :(");
         } else {
-          index = Math.floor(Math.random() * ((data.data.length - 1) - 0 + 1) + 0);
-          return app.bot_post("<img src='" + data.data[index].images.fixed_height.url + "' alt='' />");
+          return app.bot_post("<img src='" + data.data[0].images.fixed_height.url + "' alt='' />");
         }
       });
     }
