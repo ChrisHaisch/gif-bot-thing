@@ -1,4 +1,6 @@
 /*margin: top right bottom left*/
+
+/* TODO we should round the border edges of the chat box*/
 html {
     font-family: 'Barrio', cursive;
     text-align: center;
@@ -24,7 +26,8 @@ html {
     margin: 1% 10% 0 10%;
     padding: 3%;
     width: 76%;
-    height: 50%;
+    height: 50%; 
+    border-radius: 25px;
         
 }
 
